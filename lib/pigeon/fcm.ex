@@ -182,7 +182,7 @@ defmodule Pigeon.FCM do
         {:noreply, %{state | retries: @max_retries, token: token}}
 
       {:error, exception} ->
-        Logger.erorr("Problem fetching token: #{inspect(exception)}")
+        Logger.error("Problem fetching token: #{inspect(exception)}")
 
         if state.retries > 0 do
           Process.send_after(self(), @refresh, @retry_after)
@@ -208,7 +208,7 @@ defmodule Pigeon.FCM do
         {:ok, socket}
 
       {:error, reason} ->
-        Logger.erorr("Can't connect with reason: #{inspect(reason)}")
+        Logger.error("Can't connect with reason: #{inspect(reason)}")
 
         if tries > 0 do
           connect_socket(config, tries - 1)
