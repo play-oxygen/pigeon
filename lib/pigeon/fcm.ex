@@ -180,6 +180,8 @@ defmodule Pigeon.FCM do
         {:noreply, %{state | retries: @max_retries, token: token}}
 
       {:error, exception} ->
+        Logger.erorr("Problem fetching token: #{inspect(exception)}")
+
         if state.retries > 0 do
           Process.send_after(self(), @refresh, @retry_after)
           {:noreply, %{state | retries: state.retries - 1}}
