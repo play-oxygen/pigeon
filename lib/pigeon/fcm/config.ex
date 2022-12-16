@@ -87,6 +87,9 @@ defimpl Pigeon.Configurable, for: Pigeon.FCM.Config do
     case connect_socket_options(config) do
       {:ok, options} ->
         Pigeon.Http2.Client.default().connect(uri, :https, options)
+
+      error ->
+        Logger.error("Error in connection to socket #{inspect(error)}")
     end
   end
 
@@ -149,12 +152,16 @@ defimpl Pigeon.Configurable, for: Pigeon.FCM.Config do
   end
 
   def validate!(%{project_id: {:error, _}} = config) do
+    Logger.error("Error attempted to start without valid :project_id")
+
     raise Pigeon.ConfigError,
       reason: "attempted to start without valid :project_id",
       config: redact(config)
   end
 
   def validate!(%{service_account_json: {:error, _}} = config) do
+    Logger.error("Error attempted to start without valid :service_account_json")
+
     raise Pigeon.ConfigError,
       reason: "attempted to start without valid :service_account_json",
       config: redact(config)
