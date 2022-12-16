@@ -126,7 +126,9 @@ defmodule Pigeon.FCM do
       schedule_refresh(state, token)
       {:ok, %{state | socket: socket, token: token}}
     else
-      {:error, reason} -> {:stop, reason}
+      {:error, reason} ->
+        Logger.error("Cannot start FCM #{inspect(reason)}")
+        {:stop, reason}
     end
   end
 
